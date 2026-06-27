@@ -60,24 +60,28 @@ User types /check word:test
 
 ---
 
-## ⚙️ What You Need to Change in the Script
+## ⚙️ What You Need to Change
 
-### 🔴 CRITICAL — Before Pushing to GitHub
+### 🔴 CRITICAL — Version Headers (Update with Every OB Patch!)
 
-**Remove all hardcoded secrets from `bot.py`!** The following must be loaded from environment variables only:
+These three values **change with every Free Fire update**. If they're outdated, the API will reject your requests. Set them via environment variables or update the defaults in `bot.py`:
 
-| What to Change | Line | Current (INSECURE) | What to Do |
+| Env Variable | Header | Current Default | How to Find Latest |
 |---|---|---|---|
-| **Discord Bot Token** | Line 9 | Hardcoded token string | Use `os.getenv('DISCORD_BOT_TOKEN')` only |
-| **JWT Token** | Line 11 | Hardcoded JWT string | Use `os.getenv('FF_JWT_TOKEN')` only |
+| `FF_UNITY_VERSION` | `X-Unity-Version` | `2018.4.11f1` | Sniff game traffic with HTTP Toolkit / Charles Proxy |
+| `FF_GA_VERSION` | `X-GA` | `v1 1` | Same — capture from any FF API request |
+| `FF_RELEASE_VERSION` | `ReleaseVersion` | `OB50` | Check the current OB version in-game or patch notes |
 
-### 🟡 Optional Customizations
+> **How to get the latest values:** Run Free Fire on an emulator (e.g., BlueStacks) with a packet sniffer (HTTP Toolkit, Charles Proxy, or mitmproxy). Capture any API request and copy the header values.
 
-| What | Line | Description |
+### 🟡 Other Configurable Values
+
+| What | Env Variable | Description |
 |---|---|---|
-| **API URL** | Line 14 | Change region by modifying the subdomain (e.g., `client.ind.` for India) |
-| **AES Key/IV** | Lines 15–16 | These are Garena's encryption constants — do NOT change unless Garena updates them |
-| **Release Version** | Line 39 | Update `OB50` to match the current Free Fire OB version |
+| **Discord Bot Token** | `DISCORD_BOT_TOKEN` | Your bot token from the Discord Developer Portal |
+| **JWT Token** | `FF_JWT_TOKEN` | Session token from a valid FF login (expires periodically) |
+| **API URL** | *(edit in code)* | Change region by modifying the subdomain (e.g., `client.ind.` for India) |
+| **AES Key/IV** | *(do NOT change)* | Garena's encryption constants — only change if Garena updates them |
 | **Max Word Length** | Line 26–27 | Currently 12 bytes — Free Fire's nickname limit |
 | **Bulk Check Limit** | Line 105 | Currently max 10 words — adjust as needed |
 
@@ -116,18 +120,30 @@ pip install -r requirements.txt
 ```bash
 export DISCORD_BOT_TOKEN="your_discord_bot_token_here"
 export FF_JWT_TOKEN="your_freefire_jwt_token_here"
+# Update these to match the latest Free Fire version:
+export FF_UNITY_VERSION="2018.4.11f1"
+export FF_GA_VERSION="v1 1"
+export FF_RELEASE_VERSION="OB50"
 ```
 
 **Windows (PowerShell):**
 ```powershell
 $env:DISCORD_BOT_TOKEN = "your_discord_bot_token_here"
 $env:FF_JWT_TOKEN = "your_freefire_jwt_token_here"
+# Update these to match the latest Free Fire version:
+$env:FF_UNITY_VERSION = "2018.4.11f1"
+$env:FF_GA_VERSION = "v1 1"
+$env:FF_RELEASE_VERSION = "OB50"
 ```
 
 **Windows (CMD):**
 ```cmd
 set DISCORD_BOT_TOKEN=your_discord_bot_token_here
 set FF_JWT_TOKEN=your_freefire_jwt_token_here
+REM Update these to match the latest Free Fire version:
+set FF_UNITY_VERSION=2018.4.11f1
+set FF_GA_VERSION=v1 1
+set FF_RELEASE_VERSION=OB50
 ```
 
 ### 4. Run the Bot

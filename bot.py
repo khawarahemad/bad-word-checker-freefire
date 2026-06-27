@@ -15,6 +15,11 @@ URL = "https://client.ind.freefiremobile.com/CheckDirtyWords"
 AES_KEY = b'Yg&tc%DEuh6%Zc^8'
 AES_IV = bytes.fromhex('366f795a4472323245337963686a4d25')
 
+# These values change with each Free Fire OB update — keep them up to date!
+UNITY_VERSION = os.getenv('FF_UNITY_VERSION', '2018.4.11f1')
+GA_VERSION = os.getenv('FF_GA_VERSION', 'v1 1')
+RELEASE_VERSION = os.getenv('FF_RELEASE_VERSION', 'OB50')
+
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix=PREFIX, intents=intents)
@@ -34,9 +39,9 @@ def check_nickname(nickname: str, token: str = None):
 
         headers = {
             'Authorization': f'Bearer {token or DEFAULT_JWT}',
-            'X-Unity-Version': '2018.4.11f1',
-            'X-GA': 'v1 1',
-            'ReleaseVersion': 'OB50',
+            'X-Unity-Version': UNITY_VERSION,
+            'X-GA': GA_VERSION,
+            'ReleaseVersion': RELEASE_VERSION,
             'Content-Type': 'application/x-www-form-urlencoded',
             'Content-Length': '16',
             'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 9; SM-S901E Build/SP1A.210812.016)',
